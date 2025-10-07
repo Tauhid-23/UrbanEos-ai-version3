@@ -273,7 +273,12 @@ body {
   justify-content: center;
   position: relative;
   text-align: center;
-  padding: 7rem 1.5rem 3rem;
+  padding: 8rem 1.5rem 3rem; /* Increased top padding to account for fixed navbar */
+}
+
+/* Ensure content doesn't overlap with fixed navbar */
+.hero-section .container {
+  margin-top: 2rem;
 }
 
 /* Navigation Header - Floating Style */
