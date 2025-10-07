@@ -19,7 +19,9 @@ const MyGarden = () => {
 
   const handleDeletePlant = (plantId) => {
     if (window.confirm('Are you sure you want to remove this plant from your garden?')) {
-      setPlants(prevPlants => prevPlants.filter(plant => plant.id !== plantId));
+      const updatedPlants = plants.filter(plant => plant.id !== plantId);
+      setPlants(updatedPlants);
+      localStorage.setItem('myGardenPlants', JSON.stringify(updatedPlants));
     }
   };
 
