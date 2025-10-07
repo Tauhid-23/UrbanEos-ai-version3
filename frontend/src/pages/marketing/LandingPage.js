@@ -360,16 +360,38 @@ const LandingPage = () => {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {mockFeatures.slice(0, 6).map((feature) => (
-              <div key={feature.id} className="product-card">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{feature.title}</h3>
-                <p className="text-gray-600 mb-4">{feature.description}</p>
-                <button className="text-green-600 font-medium hover:text-green-700 transition-colors">
-                  Learn More →
-                </button>
-              </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {mockFeatures.slice(0, 6).map((feature, index) => (
+              <motion.div 
+                key={feature.id} 
+                className="product-card group cursor-pointer"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -8, scale: 1.02 }}
+              >
+                <motion.div 
+                  className="text-3xl md:text-4xl mb-4"
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 text-gray-900 group-hover:text-green-600 transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 mb-4 text-sm md:text-base leading-relaxed">
+                  {feature.description}
+                </p>
+                <motion.button 
+                  className="text-green-600 font-medium hover:text-green-700 transition-colors flex items-center space-x-1 group"
+                  whileHover={{ x: 5 }}
+                >
+                  <span>Learn More</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </motion.div>
             ))}
           </div>
         </div>
