@@ -40,38 +40,69 @@ const LandingPage = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="hero-section">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section className="hero-section relative overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh] lg:min-h-[90vh]">
             {/* Left Column - Content */}
-            <div className="text-center lg:text-left">
-              <h1 className="heading-1 mb-6">
+            <motion.div 
+              className="text-center lg:text-left order-2 lg:order-1"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <motion.h1 
+                className="heading-1 mb-4 md:mb-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
                 Transform Your Balcony Into a 
-                <span className="text-green-600"> Thriving Garden</span> 🌱
-              </h1>
+                <span className="text-green-600"> Thriving Garden</span>
+              </motion.h1>
               
-              <p className="body-large mb-8" style={{ color: 'var(--text-secondary)' }}>
+              <motion.p 
+                className="body-large mb-6 md:mb-8 text-gray-600"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 Join 10,000+ urban gardeners in Bangladesh growing their own food with 
                 personalized care plans, AI plant diagnosis, and expert community support
-              </p>
+              </motion.p>
 
               {/* Value Propositions */}
-              <div className="space-y-3 mb-8 text-left">
+              <motion.div 
+                className="space-y-3 mb-6 md:mb-8 text-left"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
                 {[
                   'AI plant diagnosis in seconds',
                   'Personalized care reminders',
                   'Expert community of 10,000+ gardeners',
                   'Perfect for balconies & rooftops'
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-3">
+                  <motion.div 
+                    key={index} 
+                    className="flex items-center space-x-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                  >
                     <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
                     <span className="body-medium">{item}</span>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
               {/* CTA Section */}
-              <div className="max-w-md mx-auto lg:mx-0">
+              <motion.div 
+                className="max-w-md mx-auto lg:mx-0"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+              >
                 <form onSubmit={handleEmailSubmit} className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input
@@ -79,59 +110,100 @@ const LandingPage = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email to get started"
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                       required
                     />
-                    <button
+                    <motion.button
                       type="submit"
-                      className="btn-primary whitespace-nowrap px-8"
+                      className="btn-primary whitespace-nowrap px-6 md:px-8"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       Start Growing Free
-                    </button>
+                    </motion.button>
                   </div>
                 </form>
                 
                 <div className="text-center mt-4 space-y-2">
                   <p className="text-sm text-gray-500">No credit card required • 2-minute setup</p>
-                  <div className="flex items-center justify-center space-x-2">
+                  <div className="flex items-center justify-center space-x-2 flex-wrap">
                     <div className="flex -space-x-2">
-                      {['🧑‍🌾', '👩‍🌾', '🧑‍🌾', '👨‍🌾'].map((avatar, i) => (
-                        <div key={i} className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-sm border-2 border-white">
+                      {['👨‍🌾', '👩‍🌾', '🧑‍🌾', '👨‍🌾'].map((avatar, i) => (
+                        <motion.div 
+                          key={i} 
+                          className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-sm border-2 border-white"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 0.3, delay: 1.5 + i * 0.1 }}
+                        >
                           {avatar}
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                     <span className="text-sm font-medium text-gray-700">Join 10,000+ gardeners</span>
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Right Column - Visual */}
-            <div className="relative">
-              <div className="bg-gradient-to-br from-green-100 to-emerald-200 rounded-2xl p-8 relative overflow-hidden">
-                <div className="text-center">
-                  <div className="text-8xl mb-4">🏡</div>
-                  <h3 className="text-2xl font-bold text-green-800 mb-2">Your Garden Awaits</h3>
-                  <p className="text-green-700">Beautiful balcony & rooftop gardens</p>
-                </div>
+            <motion.div 
+              className="relative order-1 lg:order-2"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1486484290742-0ce4eb743a34"
+                  alt="Beautiful balcony garden with various plants"
+                  className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 
                 {/* Floating Stats Cards */}
-                <div className="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg">
+                <motion.div 
+                  className="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg backdrop-blur-sm bg-white/90"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
+                  whileHover={{ scale: 1.05 }}
+                >
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">95%</div>
+                    <div className="text-xl md:text-2xl font-bold text-green-600">
+                      <AnimatedCounter end={95} suffix="%" />
+                    </div>
                     <div className="text-xs text-gray-600">Success Rate</div>
                   </div>
-                </div>
+                </motion.div>
                 
-                <div className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-lg">
+                <motion.div 
+                  className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-lg backdrop-blur-sm bg-white/90"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.2 }}
+                  whileHover={{ scale: 1.05 }}
+                >
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">50K+</div>
+                    <div className="text-xl md:text-2xl font-bold text-blue-600">
+                      <AnimatedCounter end={50} suffix="K+" />
+                    </div>
                     <div className="text-xs text-gray-600">Plants Growing</div>
                   </div>
-                </div>
+                </motion.div>
+
+                {/* Garden Type Badge */}
+                <motion.div 
+                  className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 1.4 }}
+                >
+                  🏡 Balcony Garden
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
