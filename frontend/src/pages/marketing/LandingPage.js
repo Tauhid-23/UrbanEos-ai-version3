@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { 
   Check, 
   Star, 
@@ -16,6 +18,7 @@ import {
 import Header from '../../components/marketing/Header';
 import Footer from '../../components/marketing/Footer';
 import { mockTestimonials, mockStats, mockFeatures } from '../../data/mock';
+import { AnimatedCounter } from '../../hooks/useCountUp';
 
 const LandingPage = () => {
   const [email, setEmail] = useState('');
