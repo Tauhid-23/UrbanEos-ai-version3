@@ -207,6 +207,42 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Problem-solution section working well. 'Urban Gardening Made Simple' section found and renders properly. Minor: Some Unsplash images fail to load due to network restrictions, but section structure, animations, and hover effects work correctly. Core functionality intact."
+  
+  - task: "Fixed Dashboard Sidebar User Profile Overlapping"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/layout/AppLayout.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Changed user profile section from absolute positioning to flexbox layout with mt-auto and shrink-0. User profile (name, level, logout) now properly stays at bottom without overlapping navigation menu items on any viewport height."
+  
+  - task: "Fixed Landing Page Mobile Menu Overlapping"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/marketing/Header.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Changed mobile menu from absolute to fixed positioning with proper top offset. Added dark overlay backdrop when menu is open. Menu now properly displays without overlapping hero content."
+  
+  - task: "Enhanced Small Screen Responsiveness"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added improved responsive CSS for small screens (320px-480px) and extra small devices (360px and below). Enhanced hero section padding, button sizing, and navbar positioning for better mobile experience. All content properly spaced and readable on small devices."
 
 metadata:
   created_by: "main_agent"
