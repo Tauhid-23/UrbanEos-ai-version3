@@ -308,43 +308,92 @@ const LandingPage = () => {
       </section>
 
       {/* Problem-Solution Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
+      <section className="py-12 md:py-16">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div 
+            className="text-center mb-12 md:mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             <h2 className="heading-2 mb-4">Urban Gardening Made Simple</h2>
-            <p className="body-large" style={{ color: 'var(--text-secondary)' }}>
+            <p className="body-large text-gray-600">
               We solve the challenges that stop people from growing their own food
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 problem: "Not sure what plants will grow in your space?",
                 solution: "AI recommends perfect plants for your balcony/roof based on space, sunlight, and climate",
-                icon: "❓"
+                image: "https://images.unsplash.com/photo-1604762524889-3e2fcc145683",
+                alt: "Collection of healthy potted plants"
               },
               {
                 problem: "Forget watering schedules and care routines?",
                 solution: "Smart reminders adapt to weather conditions and plant needs automatically",
-                icon: "📅"
+                image: "https://images.unsplash.com/photo-1673853233647-17ebc2d71b5f",
+                alt: "Person watering plants on windowsill"
               },
               {
                 problem: "Plants getting sick and you don't know why?",
                 solution: "Instant AI diagnosis with photo upload - identify diseases and get treatment plans in seconds",
-                icon: "🐛"
+                image: "https://images.unsplash.com/photo-1673853233774-34a726cfc335",
+                alt: "Person carefully caring for plants in greenhouse"
               }
             ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="text-6xl mb-6">{item.icon}</div>
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                  <p className="text-red-800 font-medium">{item.problem}</p>
-                </div>
-                <ArrowRight className="h-8 w-8 text-gray-400 mx-auto mb-4" />
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <p className="text-green-800 font-medium">{item.solution}</p>
-                </div>
-              </div>
+              <motion.div 
+                key={index} 
+                className="text-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+              >
+                {/* Image */}
+                <motion.div 
+                  className="mb-6 rounded-xl overflow-hidden shadow-lg"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="w-full h-48 md:h-56 object-cover"
+                    loading="lazy"
+                  />
+                </motion.div>
+
+                {/* Problem */}
+                <motion.div 
+                  className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <p className="text-red-800 font-medium text-sm md:text-base">{item.problem}</p>
+                </motion.div>
+
+                {/* Arrow */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <ArrowRight className="h-6 w-6 md:h-8 md:w-8 text-gray-400 mx-auto mb-4" />
+                </motion.div>
+
+                {/* Solution */}
+                <motion.div 
+                  className="bg-green-50 border border-green-200 rounded-lg p-4"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <p className="text-green-800 font-medium text-sm md:text-base">{item.solution}</p>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
