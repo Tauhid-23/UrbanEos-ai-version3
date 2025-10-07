@@ -51,6 +51,23 @@ const SignupPage = () => {
     e.preventDefault();
     setLoading(true);
     
+    // Store user data in localStorage (will be replaced with Supabase later)
+    const userData = {
+      name: formData.fullName,
+      email: formData.email,
+      location: formData.location,
+      gardenType: formData.gardenType,
+      spaceSize: formData.spaceSize,
+      experience: formData.experience,
+      plants: formData.plants,
+      avatar: formData.fullName.charAt(0).toUpperCase(),
+      level: formData.experience === 'beginner' ? 'Budding Gardener' : 
+             formData.experience === 'intermediate' ? 'Growing Gardener' : 'Blooming Gardener',
+      joinedDate: new Date().toISOString()
+    };
+    
+    localStorage.setItem('urbaneos_user', JSON.stringify(userData));
+    
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
