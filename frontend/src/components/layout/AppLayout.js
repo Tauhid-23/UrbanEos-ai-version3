@@ -154,7 +154,7 @@ const AppLayout = ({ children }) => {
               
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">
-                  Good Morning, {mockUser.name}! 🌱
+                  Good Morning, {currentUser.name}! 🌱
                 </h1>
                 <p className="text-sm text-gray-600">
                   {new Date().toLocaleDateString('en-US', { 
@@ -162,7 +162,7 @@ const AppLayout = ({ children }) => {
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
-                  })} • {mockUser.location}
+                  })} • {currentUser.location}
                 </p>
               </div>
             </div>
