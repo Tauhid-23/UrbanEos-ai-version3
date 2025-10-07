@@ -64,6 +64,7 @@ const AppLayout = ({ children }) => {
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-emerald-900 to-green-800 
         transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
+        flex flex-col
       `}>
         <div className="flex items-center justify-between h-16 px-6 bg-emerald-800">
           <div className="flex items-center space-x-3">
