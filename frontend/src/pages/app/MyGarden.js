@@ -5,7 +5,17 @@ import { mockPlants } from '../../data/mock';
 
 const MyGarden = () => {
   const navigate = useNavigate();
-  const [plants, setPlants] = useState(mockPlants);
+  
+  // Initialize with localStorage plants or fallback to mockPlants
+  const [plants, setPlants] = useState(() => {
+    const savedPlants = localStorage.getItem('myGardenPlants');
+    if (savedPlants) {
+      const parsedPlants = JSON.parse(savedPlants);
+      // If localStorage has plants, use them; otherwise use mockPlants
+      return parsedPlants.length > 0 ? parsedPlants : mockPlants;
+    }
+    return mockPlants;
+  });
 
   const handleDeletePlant = (plantId) => {
     if (window.confirm('Are you sure you want to remove this plant from your garden?')) {
