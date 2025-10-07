@@ -281,11 +281,58 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
+/* Enhanced Responsive Design */
 @media (max-width: 767px) {
   .hero-section {
-    padding: 4rem 1rem;
-    min-height: 80vh;
+    padding: 2rem 1rem;
+    min-height: 70vh;
+  }
+  
+  .heading-1 {
+    font-size: 2.25rem;
+    line-height: 1.1;
+  }
+  
+  .body-large {
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Mobile navigation improvements */
+  .nav-header {
+    margin: 0.5rem;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .heading-1 {
+    font-size: 1.875rem;
+  }
+  
+  .btn-primary {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet optimizations */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .hero-section {
+    padding: 3rem 1.5rem;
+    min-height: 75vh;
   }
 }
 
