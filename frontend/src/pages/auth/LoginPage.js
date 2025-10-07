@@ -24,11 +24,33 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     
+    // Check if user exists in localStorage (will be replaced with Supabase later)
+    const storedUser = localStorage.getItem('urbaneos_user');
+    
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      // Redirect to dashboard after successful login
-      navigate('/dashboard');
+      
+      if (storedUser) {
+        // User found, login successful
+        navigate('/dashboard');
+      } else {
+        // For demo purposes, create a default user if none exists
+        const defaultUser = {
+          name: 'Demo User',
+          email: formData.email,
+          location: 'Dhaka, Bangladesh',
+          gardenType: 'balcony',
+          spaceSize: 'medium',
+          experience: 'intermediate',
+          plants: ['Tomato', 'Cucumber', 'Herbs'],
+          avatar: formData.email.charAt(0).toUpperCase(),
+          level: 'Growing Gardener',
+          joinedDate: new Date().toISOString()
+        };
+        localStorage.setItem('urbaneos_user', JSON.stringify(defaultUser));
+        navigate('/dashboard');
+      }
     }, 1500);
   };
 
