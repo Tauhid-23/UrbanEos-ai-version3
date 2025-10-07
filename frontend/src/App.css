@@ -278,7 +278,8 @@ body {
 
 /* Ensure content doesn't overlap with fixed navbar */
 .hero-section .container {
-  margin-top: 2rem;
+  margin-top: 0;
+  padding-top: 1rem;
 }
 
 /* Navigation Header - Floating Style */
