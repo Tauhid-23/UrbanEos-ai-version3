@@ -331,23 +331,42 @@ body {
 /* Enhanced Responsive Design */
 @media (max-width: 767px) {
   .hero-section {
-    padding: 2rem 1rem;
-    min-height: 70vh;
+    padding: 1.5rem 1rem;
+    min-height: auto;
   }
   
   .heading-1 {
-    font-size: 2.25rem;
+    font-size: 2rem;
     line-height: 1.1;
+    margin-bottom: 1rem;
   }
   
   .body-large {
-    font-size: 1.125rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
   }
   
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+  
+  /* Grid improvements for mobile */
+  .grid {
+    gap: 1.5rem;
+  }
+  
+  .lg\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .lg\\:grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .md\\:grid-cols-2 {
+    grid-template-columns: 1fr;
   }
   
   /* Mobile navigation improvements */
