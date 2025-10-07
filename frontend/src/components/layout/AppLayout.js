@@ -66,7 +66,9 @@ const AppLayout = ({ children }) => {
   };
 
   const handleLogout = () => {
-    // For now, redirect to landing page
+    // Clear user data from localStorage
+    localStorage.removeItem('urbaneos_user');
+    // Redirect to landing page
     navigate('/');
   };
 
