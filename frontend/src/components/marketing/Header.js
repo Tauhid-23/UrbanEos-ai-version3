@@ -69,7 +69,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-b-2xl shadow-lg mx-4 mt-2 z-50">
+        <div className="md:hidden fixed top-[4.5rem] left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50 max-h-[calc(100vh-4.5rem)] overflow-y-auto">
           <div className="py-4 px-6 space-y-3">
             {navigation.map((item) => (
               <Link
