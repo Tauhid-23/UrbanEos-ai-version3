@@ -305,18 +305,19 @@ body {
 @media (max-width: 768px) {
   .nav-header {
     margin: 0.5rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid var(--border-light);
+    border-radius: 1rem;
+    border: 0.5px solid var(--border-light);
     background: rgba(255, 255, 255, 0.95);
+    height: 4rem;
+    position: fixed;
   }
   
   .hero-section {
-    padding: 6rem 1rem 2rem; /* Adjusted for mobile navbar */
+    padding: 7rem 1rem 2rem; /* More padding to avoid navbar overlap */
   }
   
   .hero-section .container {
-    margin-top: 1rem;
+    margin-top: 0;
   }
 }
 
