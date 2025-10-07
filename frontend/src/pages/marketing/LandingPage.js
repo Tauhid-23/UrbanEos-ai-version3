@@ -404,7 +404,7 @@ const LandingPage = () => {
             <h2 className="heading-2 mb-4">Get Started in 3 Easy Steps</h2>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 step: 1,
@@ -428,22 +428,69 @@ const LandingPage = () => {
                 icon: "🌾"
               }
             ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="relative">
-                  <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <motion.div 
+                key={index} 
+                className="text-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+              >
+                <div className="relative mb-6">
+                  <motion.div 
+                    className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto"
+                    initial={{ scale: 0, rotate: -180 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.3 + index * 0.2 
+                    }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.1 }}
+                  >
                     {item.step}
-                  </div>
-                  <div className="absolute -top-2 -right-2 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                  </motion.div>
+                  <motion.div 
+                    className="absolute -top-2 -right-2 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full"
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6 + index * 0.2 }}
+                    viewport={{ once: true }}
+                  >
                     {item.duration}
-                  </div>
+                  </motion.div>
                 </div>
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{item.title}</h3>
-                <p className="text-gray-600 mb-6">{item.description}</p>
+                <motion.div 
+                  className="text-3xl md:text-4xl mb-4"
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17,
+                    delay: 0.4 + index * 0.2 
+                  }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                >
+                  {item.icon}
+                </motion.div>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 text-gray-900">{item.title}</h3>
+                <p className="text-gray-600 mb-6 text-sm md:text-base">{item.description}</p>
                 {index < 2 && (
-                  <ArrowRight className="h-6 w-6 text-green-600 mx-auto" />
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 + index * 0.2 }}
+                    viewport={{ once: true }}
+                    className="hidden lg:block"
+                  >
+                    <ArrowRight className="h-6 w-6 text-green-600 mx-auto" />
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
 
