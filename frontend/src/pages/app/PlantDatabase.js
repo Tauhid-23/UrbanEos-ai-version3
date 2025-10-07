@@ -33,8 +33,30 @@ const PlantDatabase = () => {
   };
 
   const confirmAddToGarden = () => {
-    // In a real app, this would add to the user's garden
-    alert(`${selectedPlant.name} added to your garden! 🌱`);
+    // Add plant to localStorage or state management
+    const existingPlants = JSON.parse(localStorage.getItem('myGardenPlants') || '[]');
+    const newPlant = {
+      id: Date.now(), // Generate unique ID
+      name: selectedPlant.name,
+      type: selectedPlant.type,
+      health: Math.floor(Math.random() * 20) + 80, // Random health 80-100
+      status: 'healthy',
+      image: selectedPlant.image || '🌱',
+      daysGrowing: Math.floor(Math.random() * 30) + 1, // Random days 1-30
+      nextHarvest: Math.floor(Math.random() * 60) + 10, // Random harvest 10-70 days
+    };
+    
+    // Check if plant already exists
+    const plantExists = existingPlants.some(plant => plant.name === selectedPlant.name);
+    
+    if (plantExists) {
+      alert(`${selectedPlant.name} is already in your garden! 🌱`);
+    } else {
+      existingPlants.push(newPlant);
+      localStorage.setItem('myGardenPlants', JSON.stringify(existingPlants));
+      alert(`${selectedPlant.name} added to your garden! 🌱`);
+    }
+    
     setShowModal(false);
     setSelectedPlant(null);
   };
