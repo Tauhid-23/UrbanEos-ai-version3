@@ -256,26 +256,52 @@ const LandingPage = () => {
           </div>
 
           {/* Testimonials */}
-          <div className="grid lg:grid-cols-3 gap-8">
-            {mockTestimonials.map((testimonial) => (
-              <div key={testimonial.id} className="product-card text-center">
-                <div className="flex justify-center mb-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {mockTestimonials.map((testimonial, index) => (
+              <motion.div 
+                key={testimonial.id} 
+                className="product-card text-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -5 }}
+              >
+                <motion.div 
+                  className="flex justify-center mb-4"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
+                  viewport={{ once: true }}
+                >
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                    </motion.div>
                   ))}
-                </div>
-                <blockquote className="text-gray-700 mb-4 italic">
+                </motion.div>
+                <blockquote className="text-gray-700 mb-4 italic text-sm md:text-base">
                   "{testimonial.quote}"
                 </blockquote>
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mb-2">
+                  <motion.div 
+                    className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mb-2"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  >
                     {testimonial.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                  <div className="text-sm text-gray-600">{testimonial.location} • {testimonial.gardenType}</div>
+                  </motion.div>
+                  <div className="font-semibold text-gray-900 text-sm md:text-base">{testimonial.name}</div>
+                  <div className="text-xs md:text-sm text-gray-600">{testimonial.location} • {testimonial.gardenType}</div>
                   <div className="text-xs text-gray-500 mt-1">Using UrbanEos for {testimonial.usingFor}</div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
