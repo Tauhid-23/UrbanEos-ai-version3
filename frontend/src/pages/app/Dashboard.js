@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Sprout, 
@@ -17,6 +17,21 @@ import { mockPlants, mockTasks, mockWeather, mockUser } from '../../data/mock';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState(mockTasks);
+  const [currentUser, setCurrentUser] = useState(mockUser);
+
+  // Load user data from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem('urbaneos_user');
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setCurrentUser(userData);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setCurrentUser(mockUser);
+      }
+    }
+  }, []);
 
   const handleTaskComplete = (taskId) => {
     setTasks(prevTasks => 
