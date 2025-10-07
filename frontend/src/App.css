@@ -346,7 +346,7 @@ body {
 /* Enhanced Responsive Design */
 @media (max-width: 767px) {
   .hero-section {
-    padding: 1.5rem 1rem;
+    padding: 7rem 1rem 2rem;
     min-height: auto;
   }
   
@@ -383,29 +383,45 @@ body {
   .md\\:grid-cols-2 {
     grid-template-columns: 1fr;
   }
-  
-  /* Mobile navigation improvements */
-  .nav-header {
-    margin: 0.5rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid var(--border-light);
-    background: rgba(255, 255, 255, 0.95);
-  }
 }
 
 @media (max-width: 480px) {
   .hero-section {
-    padding: 1.5rem 0.75rem;
+    padding: 7rem 0.75rem 2rem;
+  }
+  
+  .nav-header {
+    margin: 0.25rem;
+    height: 3.5rem;
   }
   
   .heading-1 {
-    font-size: 1.875rem;
+    font-size: 1.75rem;
   }
   
   .btn-primary {
     padding: 12px 20px;
     font-size: 0.9rem;
+    min-height: 44px;
+  }
+  
+  .product-card {
+    padding: 16px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .heading-1 {
+    font-size: 1.5rem;
+  }
+  
+  .body-large {
+    font-size: 0.9rem;
+  }
+  
+  .nav-header {
+    margin: 0.25rem;
   }
 }
 
