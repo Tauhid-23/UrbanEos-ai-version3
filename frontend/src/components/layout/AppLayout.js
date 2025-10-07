@@ -123,11 +123,11 @@ const AppLayout = ({ children }) => {
         <div className="mt-auto p-4 border-t border-green-700 bg-emerald-900 shrink-0">
           <div className="flex items-center space-x-3 mb-3">
             <div className="h-10 w-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-              {mockUser.avatar}
+              {currentUser.avatar}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white font-medium truncate">{mockUser.name}</p>
-              <p className="text-green-200 text-sm truncate">{mockUser.level}</p>
+              <p className="text-white font-medium truncate">{currentUser.name}</p>
+              <p className="text-green-200 text-sm truncate">{currentUser.level}</p>
             </div>
           </div>
           <button
