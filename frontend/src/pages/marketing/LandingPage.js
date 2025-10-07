@@ -216,22 +216,41 @@ const LandingPage = () => {
           </div>
           
           {/* Statistics Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16">
             {[
-              { icon: Users, stat: mockStats.totalGardeners, label: 'Active Gardeners' },
-              { icon: Sprout, stat: mockStats.plantsGrowing, label: 'Plants Growing' },
-              { icon: Star, stat: mockStats.averageRating, label: 'Average Rating' },
-              { icon: TrendingUp, stat: mockStats.successRate, label: 'Success Rate' }
+              { icon: Users, end: 10000, suffix: '+', label: 'Active Gardeners' },
+              { icon: Sprout, end: 50000, suffix: '+', label: 'Plants Growing' },
+              { icon: Star, end: 4.8, decimals: 1, label: 'Average Rating' },
+              { icon: TrendingUp, end: 95, suffix: '%', label: 'Success Rate' }
             ].map((item, index) => {
               const Icon = item.icon;
               return (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-4">
+                <motion.div 
+                  key={index} 
+                  className="text-center p-4 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <motion.div 
+                    className="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-4"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <Icon className="h-6 w-6 text-green-600" />
+                  </motion.div>
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                    <AnimatedCounter 
+                      end={item.end} 
+                      suffix={item.suffix || ''} 
+                      decimals={item.decimals || 0}
+                      duration={2.5}
+                    />
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{item.stat}</div>
-                  <div className="text-gray-600">{item.label}</div>
-                </div>
+                  <div className="text-sm md:text-base text-gray-600">{item.label}</div>
+                </motion.div>
               );
             })}
           </div>
