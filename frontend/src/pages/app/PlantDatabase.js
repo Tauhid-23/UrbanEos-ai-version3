@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Plus } from 'lucide-react';
+import { Search, Filter, Plus, Camera, Upload, CheckCircle, Loader2 } from 'lucide-react';
 import { mockPlantDatabase } from '../../data/mock';
 
 const PlantDatabase = () => {
@@ -8,6 +8,12 @@ const PlantDatabase = () => {
   const [selectedType, setSelectedType] = useState('All Types');
   const [showModal, setShowModal] = useState(false);
   const [selectedPlant, setSelectedPlant] = useState(null);
+  
+  // AI Scanner states
+  const [activeTab, setActiveTab] = useState('browse');
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [scanResults, setScanResults] = useState(null);
 
   const plantTypes = ['All Types', ...new Set(plants.map(plant => plant.type))];
 
