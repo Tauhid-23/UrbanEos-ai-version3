@@ -41,6 +41,21 @@ const PlantDatabase = () => {
 
   const plantTypes = ['All Types', ...new Set(plants.map(plant => plant.type))];
 
+  // Supply items
+  const essentialSupplies = [
+    { id: 'seeds', name: 'Seeds/Seedlings', description: 'High-quality seeds for your plant', badge: 'Required' },
+    { id: 'pot', name: 'Growing Pot', description: 'Appropriate size container with drainage', badge: 'Required' },
+    { id: 'soil', name: 'Potting Mix', description: 'Nutrient-rich soil for optimal growth', badge: 'Required' }
+  ];
+
+  const optionalSupplies = [
+    { id: 'fertilizer', name: 'Organic Fertilizer', description: 'Boost plant health and growth', badge: 'Recommended' },
+    { id: 'tools', name: 'Garden Tools Set', description: 'Basic tools for planting and maintenance', badge: 'Popular' },
+    { id: 'pestcontrol', name: 'Natural Pest Control', description: 'Organic pest prevention solution', badge: 'Recommended' },
+    { id: 'watercan', name: 'Watering Can', description: 'Perfect size for balcony gardening', badge: 'Popular' },
+    { id: 'nutrients', name: 'Plant Nutrients', description: 'Essential vitamins and minerals', badge: 'Recommended' }
+  ];
+
   const filteredPlants = plants.filter(plant => {
     const matchesSearch = plant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          plant.type.toLowerCase().includes(searchTerm.toLowerCase());
