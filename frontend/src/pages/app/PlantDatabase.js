@@ -304,27 +304,20 @@ const PlantDatabase = () => {
 
   const handleAddScannedPlant = () => {
     if (scanResults) {
-      const existingPlants = JSON.parse(localStorage.getItem('myGardenPlants') || '[]');
-      const newPlant = {
-        id: Date.now(),
+      // Convert scan results to plant format for shopping modal
+      const scannedPlant = {
         name: scanResults.commonName,
         type: scanResults.type,
-        health: Math.floor(Math.random() * 20) + 80,
-        status: 'healthy',
+        difficulty: scanResults.difficulty,
         image: scanResults.image || '🌱',
-        daysGrowing: 1,
-        nextHarvest: Math.floor(Math.random() * 60) + 10,
+        sunNeeds: scanResults.sunNeeds,
+        water: scanResults.water,
+        growthTime: '60-90 days' // Default growth time
       };
       
-      const plantExists = existingPlants.some(plant => plant.name === scanResults.commonName);
-      
-      if (plantExists) {
-        alert(`${scanResults.commonName} is already in your garden! 🌱`);
-      } else {
-        existingPlants.push(newPlant);
-        localStorage.setItem('myGardenPlants', JSON.stringify(existingPlants));
-        alert(`${scanResults.commonName} added to your garden! 🌱`);
-      }
+      setSelectedPlant(scannedPlant);
+      setShowShoppingModal(true);
+      initializeSupplies();
     }
   };
 
