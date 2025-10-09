@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Add AI Plant Scanner feature to existing Plant Database page with tab system, image upload, loading state, and mock AI results display."
+user_problem_statement: "Add shopping/quote request modal system to Plant Database with essential supplies, optional add-ons, contact form with Bangladesh location fields, and success confirmation."
 
 backend:
   - task: "No backend changes required for UI enhancement"
