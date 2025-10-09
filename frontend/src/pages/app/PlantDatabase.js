@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Plus, Camera, Upload, CheckCircle, Loader2 } from 'lucide-react';
+import { Search, Filter, Plus, Camera, Upload, CheckCircle, Loader2, ShoppingCart, X, Lock, Phone, Mail, MapPin } from 'lucide-react';
 import { mockPlantDatabase } from '../../data/mock';
 
 const PlantDatabase = () => {
@@ -14,6 +14,30 @@ const PlantDatabase = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scanResults, setScanResults] = useState(null);
+
+  // Shopping modal states
+  const [showShoppingModal, setShowShoppingModal] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [selectedItems, setSelectedItems] = useState({});
+  const [itemQuantities, setItemQuantities] = useState({});
+  
+  // Contact form states
+  const [formData, setFormData] = useState({
+    fullName: '',
+    phone: '',
+    division: '',
+    district: '',
+    area: '',
+    address: '',
+    contactMethod: 'WhatsApp',
+    email: '',
+    postalCode: '',
+    notes: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [requestId, setRequestId] = useState('');
 
   const plantTypes = ['All Types', ...new Set(plants.map(plant => plant.type))];
 
