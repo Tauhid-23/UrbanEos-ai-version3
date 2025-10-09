@@ -59,36 +59,189 @@ const PlantDatabase = () => {
 
   const handleAddToGarden = (plant) => {
     setSelectedPlant(plant);
-    setShowModal(true);
+    setShowShoppingModal(true);
+    initializeSupplies();
   };
 
-  const confirmAddToGarden = () => {
-    // Add plant to localStorage or state management
+  // Initialize essential supplies (pre-checked and locked)
+  const initializeSupplies = () => {
+    const essentialIds = ['seeds', 'pot', 'soil'];
+    const newSelections = {};
+    const newQuantities = {};
+    
+    essentialIds.forEach(id => {
+      newSelections[id] = true;
+      newQuantities[id] = 1;
+    });
+    
+    setSelectedItems(newSelections);
+    setItemQuantities(newQuantities);
+  };
+
+  const toggleItem = (itemId, isEssential) => {
+    if (isEssential) return; // Can't toggle essential items
+    
+    setSelectedItems(prev => ({
+      ...prev,
+      [itemId]: !prev[itemId]
+    }));
+    
+    if (!selectedItems[itemId]) {
+      setItemQuantities(prev => ({
+        ...prev,
+        [itemId]: 1
+      }));
+    }
+  };
+
+  const updateQuantity = (itemId, quantity) => {
+    setItemQuantities(prev => ({
+      ...prev,
+      [itemId]: parseInt(quantity)
+    }));
+  };
+
+  const getSelectedItemsCount = () => {
+    return Object.values(selectedItems).filter(Boolean).length;
+  };
+
+  const handleSkipSupplies = () => {
+    // Add plant to garden without supplies
     const existingPlants = JSON.parse(localStorage.getItem('myGardenPlants') || '[]');
     const newPlant = {
-      id: Date.now(), // Generate unique ID
+      id: Date.now(),
       name: selectedPlant.name,
       type: selectedPlant.type,
-      health: Math.floor(Math.random() * 20) + 80, // Random health 80-100
+      health: Math.floor(Math.random() * 20) + 80,
       status: 'healthy',
       image: selectedPlant.image || '🌱',
-      daysGrowing: Math.floor(Math.random() * 30) + 1, // Random days 1-30
-      nextHarvest: Math.floor(Math.random() * 60) + 10, // Random harvest 10-70 days
+      daysGrowing: Math.floor(Math.random() * 30) + 1,
+      nextHarvest: Math.floor(Math.random() * 60) + 10,
     };
     
-    // Check if plant already exists
     const plantExists = existingPlants.some(plant => plant.name === selectedPlant.name);
     
-    if (plantExists) {
-      alert(`${selectedPlant.name} is already in your garden! 🌱`);
-    } else {
+    if (!plantExists) {
       existingPlants.push(newPlant);
       localStorage.setItem('myGardenPlants', JSON.stringify(existingPlants));
       alert(`${selectedPlant.name} added to your garden! 🌱`);
     }
     
-    setShowModal(false);
+    setShowShoppingModal(false);
     setSelectedPlant(null);
+  };
+
+  const handleRequestQuote = () => {
+    setShowShoppingModal(false);
+    setShowContactForm(true);
+  };
+
+  // Bangladesh divisions and districts
+  const divisions = {
+    'Dhaka': ['Dhaka', 'Gazipur', 'Narayanganj', 'Manikganj', 'Munshiganj', 'Narsingdi', 'Tangail'],
+    'Chittagong': ['Chittagong', 'Cox\'s Bazar', 'Rangamati', 'Bandarban', 'Khagrachari', 'Feni'],
+    'Rajshahi': ['Rajshahi', 'Bogra', 'Pabna', 'Sirajganj', 'Natore', 'Naogaon'],
+    'Khulna': ['Khulna', 'Jessore', 'Satkhira', 'Bagerhat', 'Chuadanga', 'Kushtia'],
+    'Barisal': ['Barisal', 'Patuakhali', 'Bhola', 'Pirojpur', 'Jhalokati', 'Barguna'],
+    'Sylhet': ['Sylhet', 'Moulvibazar', 'Habiganj', 'Sunamganj'],
+    'Rangpur': ['Rangpur', 'Dinajpur', 'Lalmonirhat', 'Nilphamari', 'Gaibandha', 'Kurigram'],
+    'Mymensingh': ['Mymensingh', 'Jamalpur', 'Netrokona', 'Sherpur']
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!formData.fullName.trim()) errors.fullName = 'Required';
+    if (!formData.phone.trim()) errors.phone = 'Required';
+    else if (!/^(\+880|880|0)?1[3-9]\d{8}$/.test(formData.phone.replace(/\s/g, ''))) {
+      errors.phone = 'Invalid Bangladesh phone number';
+    }
+    if (!formData.division) errors.division = 'Required';
+    if (!formData.district) errors.district = 'Required';
+    if (!formData.area.trim()) errors.area = 'Required';
+    if (!formData.address.trim()) errors.address = 'Required';
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error for this field
+    if (formErrors[field]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
+    
+    // Reset district when division changes
+    if (field === 'division') {
+      setFormData(prev => ({
+        ...prev,
+        district: ''
+      }));
+    }
+  };
+
+  const handleSubmitQuote = (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      const reqId = 'REQ' + Date.now().toString().slice(-8);
+      setRequestId(reqId);
+      
+      // Add plant to garden
+      const existingPlants = JSON.parse(localStorage.getItem('myGardenPlants') || '[]');
+      const newPlant = {
+        id: Date.now(),
+        name: selectedPlant.name,
+        type: selectedPlant.type,
+        health: Math.floor(Math.random() * 20) + 80,
+        status: 'healthy',
+        image: selectedPlant.image || '🌱',
+        daysGrowing: 1,
+        nextHarvest: Math.floor(Math.random() * 60) + 10,
+      };
+      
+      const plantExists = existingPlants.some(plant => plant.name === selectedPlant.name);
+      if (!plantExists) {
+        existingPlants.push(newPlant);
+        localStorage.setItem('myGardenPlants', JSON.stringify(existingPlants));
+      }
+      
+      setIsSubmitting(false);
+      setShowSuccess(true);
+    }, 2000);
+  };
+
+  const closeAllModals = () => {
+    setShowShoppingModal(false);
+    setShowContactForm(false);
+    setShowSuccess(false);
+    setSelectedPlant(null);
+    setFormData({
+      fullName: '',
+      phone: '',
+      division: '',
+      district: '',
+      area: '',
+      address: '',
+      contactMethod: 'WhatsApp',
+      email: '',
+      postalCode: '',
+      notes: ''
+    });
+    setFormErrors({});
   };
 
   // AI Scanner functions
