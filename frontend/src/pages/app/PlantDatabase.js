@@ -331,20 +331,200 @@ const PlantDatabase = () => {
         </div>
       )}
 
-      {/* Success Tips */}
-      <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-        <h4 className="text-lg font-bold text-green-900 mb-3">🎯 Success Tips for Bangladesh</h4>
-        <div className="grid sm:grid-cols-2 gap-4 text-sm text-green-800">
-          <div className="space-y-2">
-            <p>• Choose plants that match your available sunlight</p>
-            <p>• Consider monsoon season drainage needs</p>
+          {/* Success Tips */}
+          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+            <h4 className="text-lg font-bold text-green-900 mb-3">🎯 Success Tips for Bangladesh</h4>
+            <div className="grid sm:grid-cols-2 gap-4 text-sm text-green-800">
+              <div className="space-y-2">
+                <p>• Choose plants that match your available sunlight</p>
+                <p>• Consider monsoon season drainage needs</p>
+              </div>
+              <div className="space-y-2">
+                <p>• Start with "Easy" difficulty plants if you're new</p>
+                <p>• Factor in Dhaka's high humidity levels</p>
+              </div>
+            </div>
           </div>
-          <div className="space-y-2">
-            <p>• Start with "Easy" difficulty plants if you're new</p>
-            <p>• Factor in Dhaka's high humidity levels</p>
-          </div>
+        </>
+      )}
+
+      {/* AI Scan Plant Tab Content */}
+      {activeTab === 'scan' && (
+        <div className="space-y-6">
+          {!uploadedImage && !scanResults && (
+            <>
+              {/* Upload Section */}
+              <div className="bg-white rounded-xl shadow-lg p-12">
+                <div className="max-w-2xl mx-auto text-center">
+                  <div className="mb-8">
+                    <div className="inline-flex items-center justify-center w-32 h-32 bg-green-100 rounded-full mb-6">
+                      <Camera className="h-16 w-16 text-green-600" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-3">Identify Any Plant Instantly</h2>
+                    <p className="text-lg text-gray-600">
+                      Take a photo or upload an image to get instant plant identification with AI
+                    </p>
+                  </div>
+
+                  {/* Hidden File Input */}
+                  <input
+                    type="file"
+                    id="plant-image-upload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+
+                  {/* Upload Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                    <label
+                      htmlFor="plant-image-upload"
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors cursor-pointer"
+                    >
+                      <Camera className="h-5 w-5" />
+                      Take Photo
+                    </label>
+                    <label
+                      htmlFor="plant-image-upload"
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-green-600 border-2 border-green-600 rounded-lg font-semibold hover:bg-green-50 transition-colors cursor-pointer"
+                    >
+                      <Upload className="h-5 w-5" />
+                      Upload Image
+                    </label>
+                  </div>
+
+                  {/* Tips */}
+                  <div className="bg-green-50 rounded-lg p-6 text-left">
+                    <h4 className="font-semibold text-gray-900 mb-4">📸 Tips for Best Results:</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-gray-700">Take a clear, well-lit photo of the plant</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-gray-700">Include leaves, flowers, or distinctive features</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-gray-700">Avoid blurry or distant shots</p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-gray-700">Center the plant in the frame</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Image Preview & Analysis */}
+          {uploadedImage && !scanResults && (
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="max-w-2xl mx-auto">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Uploaded Image</h3>
+                <div className="mb-6">
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded plant"
+                    className="w-full max-h-96 object-contain rounded-lg border-2 border-gray-200"
+                  />
+                </div>
+                {isAnalyzing && (
+                  <div className="text-center py-8">
+                    <Loader2 className="h-12 w-12 text-green-600 animate-spin mx-auto mb-4" />
+                    <p className="text-xl font-semibold text-gray-900">Analyzing plant...</p>
+                    <p className="text-gray-600 mt-2">Our AI is identifying your plant</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Scan Results */}
+          {scanResults && (
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="max-w-3xl mx-auto">
+                {/* Confidence Score */}
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 rounded-full mb-4">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <span className="font-semibold text-green-900">
+                      {scanResults.confidence}% Match Confidence
+                    </span>
+                  </div>
+                </div>
+
+                {/* Plant Image Preview */}
+                <div className="mb-6">
+                  <img
+                    src={uploadedImage}
+                    alt="Scanned plant"
+                    className="w-full max-h-64 object-contain rounded-lg border-2 border-gray-200"
+                  />
+                </div>
+
+                {/* Plant Name */}
+                <div className="text-center mb-6">
+                  <div className="text-6xl mb-4">{scanResults.image}</div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">{scanResults.commonName}</h2>
+                  <p className="text-lg italic text-gray-600">{scanResults.scientificName}</p>
+                </div>
+
+                {/* Quick Facts */}
+                <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-4">Quick Facts</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-sm text-gray-600">Type</span>
+                      <p className="font-semibold text-gray-900">{scanResults.type}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Difficulty</span>
+                      <p className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(scanResults.difficulty)}`}>
+                        {scanResults.difficulty}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Sun Needs</span>
+                      <p className="font-semibold text-gray-900">{scanResults.sunNeeds}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Water</span>
+                      <p className="font-semibold text-gray-900">{scanResults.water}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-2">Description</h4>
+                  <p className="text-gray-700 leading-relaxed">{scanResults.description}</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button
+                    onClick={handleAddScannedPlant}
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                  >
+                    <Plus className="h-5 w-5" />
+                    Add to Garden & Get Supplies
+                  </button>
+                  <button
+                    onClick={handleScanAnother}
+                    className="flex-1 px-6 py-4 bg-white text-green-600 border-2 border-green-600 rounded-lg font-semibold hover:bg-green-50 transition-colors"
+                  >
+                    Scan Another Plant
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
