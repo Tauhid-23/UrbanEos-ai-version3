@@ -668,52 +668,438 @@ const PlantDatabase = () => {
         </div>
       )}
 
-      {/* Add to Garden Modal */}
-      {showModal && selectedPlant && (
+      {/* Shopping Modal */}
+      {showShoppingModal && selectedPlant && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 my-8 max-h-[90vh] overflow-y-auto">
-            <div className="text-center mb-6">
-              <div className="text-6xl mb-4">{selectedPlant.image}</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Add {selectedPlant.name}?</h2>
-              <p className="text-gray-600">
-                This will add {selectedPlant.name} to your garden and start tracking its growth.
-              </p>
+          <div className="bg-white rounded-xl max-w-2xl w-full p-6 my-8 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="text-4xl">{selectedPlant.image}</div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedPlant.name}</h2>
+                  <p className="text-sm text-gray-600">Select supplies for your plant</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowShoppingModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <h4 className="font-semibold text-gray-900 mb-2">Plant Details:</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Type:</span>
-                  <span className="font-medium">{selectedPlant.type}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Difficulty:</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(selectedPlant.difficulty)}`}>
-                    {selectedPlant.difficulty}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Growth Time:</span>
-                  <span className="font-medium">{selectedPlant.growthTime}</span>
-                </div>
+            {/* Essential Supplies */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Lock className="h-5 w-5 text-green-600" />
+                Essential Supplies
+              </h3>
+              <div className="space-y-3">
+                {essentialSupplies.map(item => (
+                  <div key={item.id} className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <input
+                      type="checkbox"
+                      checked={true}
+                      disabled
+                      className="mt-1 h-5 w-5 text-green-600 rounded"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-gray-900">{item.name}</span>
+                        <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded-full">
+                          {item.badge}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">{item.description}</p>
+                    </div>
+                    <select
+                      value={itemQuantities[item.id] || 1}
+                      onChange={(e) => updateQuantity(item.id, e.target.value)}
+                      className="px-3 py-1 border border-gray-300 rounded-lg text-sm"
+                    >
+                      {[1, 2, 3, 4, 5].map(num => (
+                        <option key={num} value={num}>Qty: {num}</option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="flex space-x-3">
+            {/* Optional Add-ons */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Optional Add-ons</h3>
+              <div className="space-y-3">
+                {optionalSupplies.map(item => (
+                  <div
+                    key={item.id}
+                    className={`flex items-start gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${
+                      selectedItems[item.id]
+                        ? 'bg-blue-50 border-blue-300'
+                        : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                    }`}
+                    onClick={() => toggleItem(item.id, false)}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedItems[item.id] || false}
+                      onChange={() => {}}
+                      className="mt-1 h-5 w-5 text-blue-600 rounded"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-gray-900">{item.name}</span>
+                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                          item.badge === 'Recommended'
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : 'bg-purple-100 text-purple-700'
+                        }`}>
+                          {item.badge}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">{item.description}</p>
+                    </div>
+                    {selectedItems[item.id] && (
+                      <select
+                        value={itemQuantities[item.id] || 1}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          updateQuantity(item.id, e.target.value);
+                        }}
+                        className="px-3 py-1 border border-gray-300 rounded-lg text-sm"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {[1, 2, 3, 4, 5].map(num => (
+                          <option key={num} value={num}>Qty: {num}</option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Summary */}
+            <div className="border-t pt-4">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-lg font-semibold text-gray-900">
+                    {getSelectedItemsCount()} items selected
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    We'll contact you with a personalized quote
+                  </p>
+                </div>
+                <ShoppingCart className="h-8 w-8 text-green-600" />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleSkipSupplies}
+                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                >
+                  Skip for Now
+                </button>
+                <button
+                  onClick={handleRequestQuote}
+                  className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                >
+                  Request Quote
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Contact Form Modal */}
+      {showContactForm && selectedPlant && !showSuccess && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl max-w-2xl w-full p-6 my-8 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Contact Information</h2>
+                <p className="text-sm text-gray-600">We'll contact you with a personalized quote</p>
+              </div>
               <button
-                onClick={() => setShowModal(false)}
-                className="btn-secondary flex-1 py-2"
+                onClick={closeAllModals}
+                className="text-gray-400 hover:text-gray-600"
               >
-                Cancel
-              </button>
-              <button
-                onClick={confirmAddToGarden}
-                className="btn-primary flex-1 py-2"
-              >
-                Add to Garden
+                <X className="h-6 w-6" />
               </button>
             </div>
+
+            {/* Selected Items Summary */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+              <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                <ShoppingCart className="h-5 w-5 text-green-600" />
+                Selected Items ({getSelectedItemsCount()})
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {essentialSupplies.filter(item => selectedItems[item.id]).map(item => (
+                  <span key={item.id} className="px-3 py-1 bg-white border border-green-300 rounded-full text-sm">
+                    {item.name} (x{itemQuantities[item.id]})
+                  </span>
+                ))}
+                {optionalSupplies.filter(item => selectedItems[item.id]).map(item => (
+                  <span key={item.id} className="px-3 py-1 bg-white border border-blue-300 rounded-full text-sm">
+                    {item.name} (x{itemQuantities[item.id]})
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <form onSubmit={handleSubmitQuote} className="space-y-4">
+              {/* Full Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.fullName}
+                  onChange={(e) => handleFormChange('fullName', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                    formErrors.fullName ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter your full name"
+                />
+                {formErrors.fullName && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.fullName}</p>
+                )}
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Phone className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleFormChange('phone', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      formErrors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="+880 1XXXXXXXXX"
+                  />
+                </div>
+                {formErrors.phone && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>
+                )}
+              </div>
+
+              {/* Division and District */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Division <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.division}
+                    onChange={(e) => handleFormChange('division', e.target.value)}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      formErrors.division ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  >
+                    <option value="">Select Division</option>
+                    {Object.keys(divisions).map(div => (
+                      <option key={div} value={div}>{div}</option>
+                    ))}
+                  </select>
+                  {formErrors.division && (
+                    <p className="text-red-500 text-xs mt-1">{formErrors.division}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    District <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.district}
+                    onChange={(e) => handleFormChange('district', e.target.value)}
+                    disabled={!formData.division}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      formErrors.district ? 'border-red-500' : 'border-gray-300'
+                    } ${!formData.division ? 'bg-gray-100' : ''}`}
+                  >
+                    <option value="">Select District</option>
+                    {formData.division && divisions[formData.division].map(dist => (
+                      <option key={dist} value={dist}>{dist}</option>
+                    ))}
+                  </select>
+                  {formErrors.district && (
+                    <p className="text-red-500 text-xs mt-1">{formErrors.district}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Area/Thana */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Area/Thana <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <MapPin className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={formData.area}
+                    onChange={(e) => handleFormChange('area', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                      formErrors.area ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Enter your area or thana"
+                  />
+                </div>
+                {formErrors.area && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.area}</p>
+                )}
+              </div>
+
+              {/* Full Address */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Full Address <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  value={formData.address}
+                  onChange={(e) => handleFormChange('address', e.target.value)}
+                  rows={3}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                    formErrors.address ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="House/Flat, Road, Landmark..."
+                />
+                {formErrors.address && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>
+                )}
+              </div>
+
+              {/* Preferred Contact Method */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Preferred Contact Method <span className="text-red-500">*</span>
+                </label>
+                <div className="flex gap-4">
+                  {['WhatsApp', 'Phone', 'Email'].map(method => (
+                    <label key={method} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        value={method}
+                        checked={formData.contactMethod === method}
+                        onChange={(e) => handleFormChange('contactMethod', e.target.value)}
+                        className="h-4 w-4 text-green-600"
+                      />
+                      <span className="text-sm text-gray-700">{method}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Email (Optional) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email (Optional)
+                </label>
+                <div className="relative">
+                  <Mail className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleFormChange('email', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+              </div>
+
+              {/* Postal Code (Optional) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Postal Code (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={formData.postalCode}
+                  onChange={(e) => handleFormChange('postalCode', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="1234"
+                />
+              </div>
+
+              {/* Additional Notes */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Additional Notes (Optional)
+                </label>
+                <textarea
+                  value={formData.notes}
+                  onChange={(e) => handleFormChange('notes', e.target.value)}
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Budget constraints, delivery preferences, etc."
+                />
+              </div>
+
+              {/* Submit Buttons */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowContactForm(false);
+                    setShowShoppingModal(true);
+                  }}
+                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                >
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit Quote Request'
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-md w-full p-8 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="h-10 w-10 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Quote Request Submitted!</h2>
+            <p className="text-gray-600 mb-4">
+              We'll contact you within 24 hours with a personalized quote
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <p className="text-sm text-gray-600 mb-1">Request ID</p>
+              <p className="text-lg font-mono font-semibold text-gray-900">{requestId}</p>
+            </div>
+            <button
+              onClick={closeAllModals}
+              className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+            >
+              View My Garden
+            </button>
           </div>
         </div>
       )}
