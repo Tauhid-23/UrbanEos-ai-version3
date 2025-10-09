@@ -67,6 +67,75 @@ const PlantDatabase = () => {
     setSelectedPlant(null);
   };
 
+  // AI Scanner functions
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(reader.result);
+        setScanResults(null);
+        // Start analysis
+        analyzePlant();
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const analyzePlant = () => {
+    setIsAnalyzing(true);
+    
+    // Mock AI analysis after 3 seconds
+    setTimeout(() => {
+      const mockResults = {
+        confidence: 94,
+        commonName: 'Tomato Plant',
+        scientificName: 'Solanum lycopersicum',
+        type: 'Vegetable',
+        difficulty: 'Easy',
+        sunNeeds: 'Full Sun',
+        water: 'Moderate',
+        description: 'Tomatoes are one of the most popular vegetables to grow in Bangladesh. They thrive in warm weather and can be grown in containers or garden beds. Perfect for balcony gardens with adequate sunlight.',
+        image: '🍅'
+      };
+      
+      setScanResults(mockResults);
+      setIsAnalyzing(false);
+    }, 3000);
+  };
+
+  const handleScanAnother = () => {
+    setUploadedImage(null);
+    setScanResults(null);
+    setIsAnalyzing(false);
+  };
+
+  const handleAddScannedPlant = () => {
+    if (scanResults) {
+      const existingPlants = JSON.parse(localStorage.getItem('myGardenPlants') || '[]');
+      const newPlant = {
+        id: Date.now(),
+        name: scanResults.commonName,
+        type: scanResults.type,
+        health: Math.floor(Math.random() * 20) + 80,
+        status: 'healthy',
+        image: scanResults.image || '🌱',
+        daysGrowing: 1,
+        nextHarvest: Math.floor(Math.random() * 60) + 10,
+      };
+      
+      const plantExists = existingPlants.some(plant => plant.name === scanResults.commonName);
+      
+      if (plantExists) {
+        alert(`${scanResults.commonName} is already in your garden! 🌱`);
+      } else {
+        existingPlants.push(newPlant);
+        localStorage.setItem('myGardenPlants', JSON.stringify(existingPlants));
+        alert(`${scanResults.commonName} added to your garden! 🌱`);
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
