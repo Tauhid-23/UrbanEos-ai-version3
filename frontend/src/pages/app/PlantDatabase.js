@@ -146,6 +146,38 @@ const PlantDatabase = () => {
         </p>
       </div>
 
+      {/* Tab Navigation */}
+      <div className="bg-white rounded-xl shadow-lg p-2">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setActiveTab('browse')}
+            className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${
+              activeTab === 'browse'
+                ? 'bg-green-600 text-white shadow-md'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <Search className="h-5 w-5" />
+              Browse Database
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab('scan')}
+            className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${
+              activeTab === 'scan'
+                ? 'bg-green-600 text-white shadow-md'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <Camera className="h-5 w-5" />
+              AI Scan Plant
+            </span>
+          </button>
+        </div>
+      </div>
+
       {/* Search and Filter */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="flex flex-col sm:flex-row gap-4">
