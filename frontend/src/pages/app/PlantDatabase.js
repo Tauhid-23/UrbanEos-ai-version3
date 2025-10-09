@@ -178,8 +178,11 @@ const PlantDatabase = () => {
         </div>
       </div>
 
-      {/* Search and Filter */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      {/* Browse Database Tab Content */}
+      {activeTab === 'browse' && (
+        <>
+          {/* Search and Filter */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
             <Search className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
