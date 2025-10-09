@@ -475,6 +475,56 @@ const PlantDatabase = () => {
           )}
         </div>
       )}
+
+      {/* Add to Garden Modal */}
+      {showModal && selectedPlant && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl max-w-md w-full p-6 my-8 max-h-[90vh] overflow-y-auto">
+            <div className="text-center mb-6">
+              <div className="text-6xl mb-4">{selectedPlant.image}</div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Add {selectedPlant.name}?</h2>
+              <p className="text-gray-600">
+                This will add {selectedPlant.name} to your garden and start tracking its growth.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <h4 className="font-semibold text-gray-900 mb-2">Plant Details:</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Type:</span>
+                  <span className="font-medium">{selectedPlant.type}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Difficulty:</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(selectedPlant.difficulty)}`}>
+                    {selectedPlant.difficulty}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Growth Time:</span>
+                  <span className="font-medium">{selectedPlant.growthTime}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowModal(false)}
+                className="btn-secondary flex-1 py-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmAddToGarden}
+                className="btn-primary flex-1 py-2"
+              >
+                Add to Garden
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
