@@ -274,3 +274,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Added AI Plant Scanner feature to PlantDatabase component. Implemented tab system with 'Browse Database' (existing functionality) and 'AI Scan Plant' (new feature). AI Scanner includes: image upload with camera/upload buttons, image preview, 3-second loading animation with spinner, mock AI results showing 94% confidence Tomato Plant identification with scientific name, quick facts, description, and action buttons. All using React hooks, Lucide icons, and Tailwind CSS. Ready for frontend testing to verify tab switching, image upload, loading state, and results display."
+  - agent: "main"
+    message: "Calling frontend testing agent to test AI Plant Scanner feature. Test scope: tab navigation, image upload functionality, loading state animation, results display, and action buttons."
