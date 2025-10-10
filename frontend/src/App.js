@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
 // Marketing Pages
 import LandingPage from "./pages/marketing/LandingPage";
@@ -30,8 +31,9 @@ import AppLayout from "./components/layout/AppLayout";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
+    <AuthProvider>
+      <div className="App">
+        <BrowserRouter>
         <Routes>
           {/* Marketing Pages */}
           <Route path="/" element={<LandingPage />} />
