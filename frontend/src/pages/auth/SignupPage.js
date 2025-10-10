@@ -52,31 +52,31 @@ const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    // Validate password length
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
     setLoading(true);
     
-    // Store user data in localStorage (will be replaced with Supabase later)
-    const userData = {
-      name: formData.fullName,
-      email: formData.email,
-      location: formData.location,
-      gardenType: formData.gardenType,
-      spaceSize: formData.spaceSize,
-      experience: formData.experience,
-      plants: formData.plants,
-      avatar: formData.fullName.charAt(0).toUpperCase(),
-      level: formData.experience === 'beginner' ? 'Budding Gardener' : 
-             formData.experience === 'intermediate' ? 'Growing Gardener' : 'Blooming Gardener',
-      joinedDate: new Date().toISOString()
-    };
-    
-    localStorage.setItem('urbaneos_user', JSON.stringify(userData));
-    
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      // Auto-login and redirect to dashboard
+    try {
+      await registerUser(formData);
       navigate('/dashboard');
-    }, 2000);
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const steps = [
