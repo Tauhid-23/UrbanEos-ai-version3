@@ -25,36 +25,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
     
-    // Check if user exists in localStorage (will be replaced with Supabase later)
-    const storedUser = localStorage.getItem('urbaneos_user');
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await login(formData.email, formData.password);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err.response?.data?.detail || 'Invalid email or password. Please try again.');
+    } finally {
       setLoading(false);
-      
-      if (storedUser) {
-        // User found, login successful
-        navigate('/dashboard');
-      } else {
-        // For demo purposes, create a default user if none exists
-        const defaultUser = {
-          name: 'Demo User',
-          email: formData.email,
-          location: 'Dhaka, Bangladesh',
-          gardenType: 'balcony',
-          spaceSize: 'medium',
-          experience: 'intermediate',
-          plants: ['Tomato', 'Cucumber', 'Herbs'],
-          avatar: formData.email.charAt(0).toUpperCase(),
-          level: 'Growing Gardener',
-          joinedDate: new Date().toISOString()
-        };
-        localStorage.setItem('urbaneos_user', JSON.stringify(defaultUser));
-        navigate('/dashboard');
-      }
-    }, 1500);
+    }
   };
 
   return (
