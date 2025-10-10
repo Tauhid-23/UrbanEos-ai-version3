@@ -1,0 +1,319 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Sprout, 
+  CheckSquare, 
+  Calendar, 
+  TrendingUp,
+  Plus,
+  Droplets,
+  Sun,
+  Wind,
+  Eye,
+  AlertTriangle
+} from 'lucide-react';
+import { mockPlants, mockTasks, mockWeather, mockUser } from '../../data/mock';
+
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [tasks, setTasks] = useState(mockTasks);
+  const [currentUser, setCurrentUser] = useState(mockUser);
+
+  // Load user data from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem('urbaneos_user');
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setCurrentUser(userData);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setCurrentUser(mockUser);
+      }
+    }
+  }, []);
+
+  const handleTaskComplete = (taskId) => {
+    setTasks(prevTasks => 
+      prevTasks.map(task => 
+        task.id === taskId 
+          ? { ...task, status: task.status === 'completed' ? 'pending' : 'completed' }
+          : task
+      )
+    );
+  };
+
+  const todaysTasks = tasks.filter(task => task.dueDate === '2025-01-15');
+  const pendingTasks = todaysTasks.filter(task => task.status === 'pending');
+  const healthyPlants = mockPlants.filter(plant => plant.status === 'healthy').length;
+  const totalPlants = mockPlants.length;
+  const nextHarvest = Math.min(...mockPlants.map(plant => plant.nextHarvest));
+  const avgHealth = Math.round(mockPlants.reduce((sum, plant) => sum + plant.health, 0) / mockPlants.length);
+
+  const stats = [
+    {
+      title: 'Plants Growing',
+      value: totalPlants.toString(),
+      subtitle: `${healthyPlants} healthy`,
+      color: 'from-green-500 to-emerald-600',
+      icon: Sprout,
+      onClick: () => navigate('/my-garden')
+    },
+    {
+      title: 'Tasks Due Today',
+      value: pendingTasks.length.toString(),
+      subtitle: `${todaysTasks.length} total tasks`,
+      color: 'from-blue-500 to-indigo-600',
+      icon: CheckSquare,
+      onClick: () => navigate('/tasks')
+    },
+    {
+      title: 'Days Until Harvest',
+      value: nextHarvest.toString(),
+      subtitle: 'Next harvest ready',
+      color: 'from-orange-500 to-red-500',
+      icon: Calendar,
+      onClick: () => navigate('/harvest')
+    },
+    {
+      title: 'Garden Health Score',
+      value: `${avgHealth}%`,
+      subtitle: 'Overall garden health',
+      color: 'from-purple-500 to-pink-500',
+      icon: TrendingUp,
+      onClick: () => navigate('/tracking')
+    }
+  ];
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getTaskIcon = (task) => {
+    if (task.toLowerCase().includes('water')) return <Droplets className="h-4 w-4" />;
+    if (task.toLowerCase().includes('prune')) return <span className="text-sm">✂️</span>;
+    if (task.toLowerCase().includes('fertilize')) return <span className="text-sm">🌾</span>;
+    return <CheckSquare className="h-4 w-4" />;
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Weather Alert Banner */}
+      {mockWeather.alert && (
+        <div className="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-r-lg">
+          <div className="flex items-center">
+            <AlertTriangle className="h-5 w-5 text-orange-400 mr-3" />
+            <div>
+              <p className="text-orange-800 font-medium">Weather Alert</p>
+              <p className="text-orange-700 text-sm">{mockWeather.alert}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={index}
+              onClick={stat.onClick}
+              className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1"
+            >
+              <div className={`bg-gradient-to-r ${stat.color} rounded-lg p-3 w-fit mb-4`}>
+                <Icon className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
+                <p className="text-lg font-semibold text-gray-700 mb-2">{stat.title}</p>
+                <p className="text-sm text-gray-500">{stat.subtitle}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Today's Tasks */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Today's Tasks</h2>
+            <button
+              onClick={() => navigate('/tasks')}
+              className="btn-primary flex items-center space-x-2"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Task</span>
+            </button>
+          </div>
+
+          {todaysTasks.length > 0 ? (
+            <div className="space-y-4">
+              {todaysTasks.slice(0, 4).map((task) => (
+                <div
+                  key={task.id}
+                  className={`
+                    flex items-center space-x-4 p-4 rounded-lg border-2 transition-all
+                    ${task.status === 'completed' 
+                      ? 'bg-green-50 border-green-200' 
+                      : 'bg-white border-gray-200 hover:border-gray-300'
+                    }
+                  `}
+                >
+                  <button
+                    onClick={() => handleTaskComplete(task.id)}
+                    className={`
+                      w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all
+                      ${task.status === 'completed' 
+                        ? 'bg-green-500 border-green-500 text-white' 
+                        : 'border-gray-300 hover:border-green-500'
+                      }
+                    `}
+                  >
+                    {task.status === 'completed' && <CheckSquare className="h-3 w-3" />}
+                  </button>
+
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3">
+                      <div className="text-gray-500">
+                        {getTaskIcon(task.task)}
+                      </div>
+                      <div className={`
+                        ${task.status === 'completed' ? 'line-through text-gray-500' : 'text-gray-900'}
+                      `}>
+                        <p className="font-semibold">{task.task}</p>
+                        <p className="text-sm text-gray-600">{task.plant} • {task.time}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                    {task.priority}
+                  </span>
+                </div>
+              ))}
+
+              {todaysTasks.length > 4 && (
+                <button
+                  onClick={() => navigate('/tasks')}
+                  className="w-full py-3 text-green-600 hover:text-green-700 font-medium text-center border-2 border-dashed border-gray-300 rounded-lg hover:border-green-300 transition-colors"
+                >
+                  View {todaysTasks.length - 4} more tasks
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <CheckSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-500 mb-4">No tasks scheduled for today</p>
+              <button
+                onClick={() => navigate('/tasks')}
+                className="btn-primary"
+              >
+                Add Your First Task
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Weather Widget */}
+        <div className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-xl shadow-lg p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold">Weather Today</h3>
+            <button
+              onClick={() => navigate('/weather')}
+              className="text-white hover:text-blue-200 transition-colors"
+            >
+              <Eye className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <div className="text-5xl font-bold mb-2">{mockWeather.temp}°C</div>
+            <div className="text-blue-100 text-lg mb-4">{mockWeather.condition}</div>
+            <div className="text-sm text-blue-200">📍 {mockUser.location}</div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 text-center">
+              <Wind className="h-4 w-4 mx-auto mb-1 text-blue-200" />
+              <div className="text-sm font-medium">{mockWeather.wind} km/h</div>
+              <div className="text-xs text-blue-200">Wind</div>
+            </div>
+            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 text-center">
+              <Droplets className="h-4 w-4 mx-auto mb-1 text-blue-200" />
+              <div className="text-sm font-medium">{mockWeather.humidity}%</div>
+              <div className="text-xs text-blue-200">Humidity</div>
+            </div>
+            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 text-center">
+              <Sun className="h-4 w-4 mx-auto mb-1 text-blue-200" />
+              <div className="text-sm font-medium">{mockWeather.uvIndex}</div>
+              <div className="text-xs text-blue-200">UV Index</div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => navigate('/weather')}
+            className="w-full bg-white bg-opacity-10 backdrop-blur-sm text-white py-2 px-4 rounded-lg hover:bg-opacity-20 transition-colors font-medium"
+          >
+            7-Day Forecast
+          </button>
+        </div>
+      </div>
+
+      {/* Plant Health Overview */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Plant Health Overview</h2>
+          <button
+            onClick={() => navigate('/my-garden')}
+            className="btn-secondary flex items-center space-x-2"
+          >
+            <Eye className="h-4 w-4" />
+            <span>View All Plants</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {mockPlants.map((plant) => (
+            <div
+              key={plant.id}
+              onClick={() => navigate('/my-garden')}
+              className="product-card cursor-pointer p-4"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="text-4xl">{plant.image}</div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900 mb-1">{plant.name}</h3>
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="w-16 bg-gray-200 rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full ${
+                          plant.health >= 90 ? 'bg-green-500' :
+                          plant.health >= 70 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${plant.health}%` }}
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">{plant.health}%</span>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {plant.nextHarvest} days to harvest
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
