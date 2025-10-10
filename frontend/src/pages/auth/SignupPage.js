@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Sprout, Eye, EyeOff, Mail, Lock, User, MapPin, Home, Building } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 const SignupPage = () => {
   const navigate = useNavigate();
