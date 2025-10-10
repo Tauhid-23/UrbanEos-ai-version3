@@ -22,6 +22,8 @@ const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { register: registerUser } = useAuth();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
