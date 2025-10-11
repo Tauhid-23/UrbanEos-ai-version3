@@ -32,8 +32,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes (will be added)
-// app.use('/api/auth', authRoutes);
+// Import Routes
+import authRoutes from './routes/auth.js';
+
+// API Routes
+app.use('/api/auth', authRoutes);
 // app.use('/api/users', userRoutes);
 // app.use('/api/plants', plantRoutes);
 // app.use('/api/plant-database', plantDatabaseRoutes);
