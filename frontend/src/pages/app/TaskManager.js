@@ -178,7 +178,7 @@ const TaskManager = () => {
                       <div className="flex items-center space-x-4 mt-1 text-sm text-gray-600">
                         <span className="flex items-center space-x-1">
                           <span>🌿</span>
-                          <span>{task.plant}</span>
+                          <span>{task.plantName}</span>
                         </span>
                         <span className="flex items-center space-x-1">
                           <span>⏰</span>
