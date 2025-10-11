@@ -198,7 +198,7 @@ const Dashboard = () => {
             <div className="space-y-4">
               {todaysTasks.slice(0, 4).map((task) => (
                 <div
-                  key={task.id}
+                  key={task._id}
                   className={`
                     flex items-center space-x-4 p-4 rounded-lg border-2 transition-all
                     ${task.status === 'completed' 
@@ -208,7 +208,7 @@ const Dashboard = () => {
                   `}
                 >
                   <button
-                    onClick={() => handleTaskComplete(task.id)}
+                    onClick={() => handleTaskComplete(task._id, task.status)}
                     className={`
                       w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all
                       ${task.status === 'completed' 
