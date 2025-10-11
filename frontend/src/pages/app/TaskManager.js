@@ -107,6 +107,17 @@ const TaskManager = () => {
   const completedTasks = tasks.filter(task => task.status === 'completed');
   const pendingTasks = tasks.filter(task => task.status === 'pending');
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading tasks...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
