@@ -165,7 +165,12 @@ const MyGarden = () => {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div>
                     <p className="text-sm text-gray-500">Next Harvest</p>
-                    <p className="font-semibold text-gray-900">{plant.nextHarvest} days</p>
+                    <p className="font-semibold text-gray-900">
+                      {plant.expectedHarvestDate 
+                        ? `${Math.max(0, Math.ceil((new Date(plant.expectedHarvestDate) - new Date()) / (1000 * 60 * 60 * 24)))} days`
+                        : 'N/A'
+                      }
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Type</p>
