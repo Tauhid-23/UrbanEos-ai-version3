@@ -104,9 +104,9 @@ class UrbanEosBackendTester:
             
             if response.status_code == 201:
                 data = response.json()
-                if data.get('success') and data.get('token'):
-                    self.token = data['token']
-                    self.user_id = data['user']['_id']
+                if data.get('success') and data.get('data', {}).get('token'):
+                    self.token = data['data']['token']
+                    self.user_id = data['data']['user']['_id']
                     print(f"✅ User registered successfully")
                     print(f"   User ID: {self.user_id}")
                     print(f"   Token: {self.token[:20]}...")
