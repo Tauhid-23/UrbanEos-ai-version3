@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Droplets, Search, Trash2, AlertTriangle } from 'lucide-react';
-import { mockPlants } from '../../data/mock';
+import { Plus, Droplets, Search, Trash2, AlertTriangle, Loader2 } from 'lucide-react';
+import { plantAPI } from '../../services/api';
 
 const MyGarden = () => {
   const navigate = useNavigate();
   
-  // Initialize with localStorage plants or fallback to mockPlants
-  const [plants, setPlants] = useState(() => {
-    const savedPlants = localStorage.getItem('myGardenPlants');
-    if (savedPlants) {
-      const parsedPlants = JSON.parse(savedPlants);
-      // If localStorage has plants, use them; otherwise use mockPlants
-      return parsedPlants.length > 0 ? parsedPlants : mockPlants;
-    }
-    return mockPlants;
-  });
+  const [plants, setPlants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch plants from API
+  useEffect(() => {
+    const fetchPlants = async () => {
+      try {
+        setLoading(true);
+        const response = await plantAPI.getAll();
+        setPlants(response.data.plants || []);
+        setError(null);
+      } catch (error) {
+        console.error('Failed to load plants:', error);
+        setError('Failed to load your plants. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlants();
+  }, []);
 
   const handleDeletePlant = (plantId) => {
     if (window.confirm('Are you sure you want to remove this plant from your garden?')) {
