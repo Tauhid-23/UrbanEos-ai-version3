@@ -126,7 +126,7 @@ const MyGarden = () => {
               `}>
                 <div className="absolute top-2 right-2">
                   <button
-                    onClick={() => handleDeletePlant(plant.id)}
+                    onClick={() => handleDeletePlant(plant._id)}
                     className="p-1 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
