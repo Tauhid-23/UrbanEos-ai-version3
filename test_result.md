@@ -136,16 +136,19 @@ backend:
         comment: "✅ COMPREHENSIVE TASK CRUD TESTING COMPLETE: All 7/7 task operations working perfectly. ✅ Task Creation: Successfully created 4 test tasks with different priorities (high/medium/low), task types (watering, fertilizing, pruning, pest-control), statuses (pending/completed), and due dates. Plant associations working correctly. ✅ Get All Tasks: Retrieved all 4 tasks with proper count, populated plant data, and sorted by due date and priority. ✅ Status Filtering: ?status=pending filter returned only 3 pending tasks correctly. ✅ Priority Filtering: ?priority=high filter returned only 2 high priority tasks correctly. ✅ Task Update: Status change to 'completed' automatically set completedAt timestamp correctly. ✅ Date Range Query: /tasks/range endpoint returned tasks within specified date range (4 tasks found). ✅ Task Deletion: Hard delete working correctly, task returns 404 after deletion. All filtering, population, and date handling working as expected with proper JWT authentication."
 
   - task: "External URL Routing Configuration"
-    implemented: false
-    working: false
-    file: "/etc/supervisor/conf.d/supervisord.conf, nginx configuration"
-    stuck_count: 1
+    implemented: true
+    working: true
+    file: "/app/backend/.env"
+    stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ INFRASTRUCTURE ISSUE IDENTIFIED: External URL https://garden-tracker-app.preview.emergentagent.com/api returns 502 Bad Gateway errors. Backend is running correctly on localhost:5000 and all APIs work perfectly when accessed locally. Issue appears to be with external proxy/nginx configuration not properly routing to backend port 5000. This prevents frontend from accessing backend APIs when deployed. Backend supervisor config shows Node.js server running but no explicit port mapping for external access. Requires infrastructure/deployment configuration fix."
+      - working: true
+        agent: "main"
+        comment: "✅ FIXED: Changed backend PORT from 5000 to 8001 in .env file to match Kubernetes ingress rules. The ingress automatically redirects all '/api' requests to port 8001. Restarted backend service. External URL https://garden-tracker-app.preview.emergentagent.com/api/health now returns 200 OK. Frontend can now communicate with backend through external URL."
 
 frontend:
   - task: "Plant API Integration & MyGarden Page"
