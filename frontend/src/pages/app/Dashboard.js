@@ -229,7 +229,7 @@ const Dashboard = () => {
                         ${task.status === 'completed' ? 'line-through text-gray-500' : 'text-gray-900'}
                       `}>
                         <p className="font-semibold">{task.task}</p>
-                        <p className="text-sm text-gray-600">{task.plant} • {task.time}</p>
+                        <p className="text-sm text-gray-600">{task.plantName} • {task.time}</p>
                       </div>
                     </div>
                   </div>
