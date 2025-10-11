@@ -10,45 +10,87 @@ import {
   Sun,
   Wind,
   Eye,
-  AlertTriangle
+  AlertTriangle,
+  Loader2
 } from 'lucide-react';
-import { mockPlants, mockTasks, mockWeather, mockUser } from '../../data/mock';
+import { plantAPI, taskAPI } from '../../services/api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [tasks, setTasks] = useState(mockTasks);
-  const [currentUser, setCurrentUser] = useState(mockUser);
+  const [tasks, setTasks] = useState([]);
+  const [plants, setPlants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalPlants: 0,
+    healthyPlants: 0,
+    pendingTasks: 0,
+    todaysTasks: 0,
+    avgHealth: 0,
+    nextHarvest: 0
+  });
 
-  // Load user data from localStorage
+  // Fetch dashboard data
   useEffect(() => {
-    const storedUser = localStorage.getItem('urbaneos_user');
-    if (storedUser) {
+    const fetchDashboardData = async () => {
       try {
-        const userData = JSON.parse(storedUser);
-        setCurrentUser(userData);
+        setLoading(true);
+        const [plantsRes, tasksRes] = await Promise.all([
+          plantAPI.getAll(),
+          taskAPI.getAll({ status: 'pending' })
+        ]);
+
+        const plantsData = plantsRes.data.plants || [];
+        const tasksData = tasksRes.data.tasks || [];
+
+        setPlants(plantsData);
+        setTasks(tasksData.slice(0, 5)); // Show only first 5 tasks
+
+        // Calculate statistics
+        const healthyPlants = plantsData.filter(p => p.status === 'healthy').length;
+        const avgHealth = plantsData.length > 0
+          ? Math.round(plantsData.reduce((sum, p) => sum + (p.health || 100), 0) / plantsData.length)
+          : 0;
+
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+        const todaysTasks = tasksData.filter(task => {
+          const taskDate = new Date(task.dueDate).toISOString().split('T')[0];
+          return taskDate === today;
+        });
+
+        setStats({
+          totalPlants: plantsData.length,
+          healthyPlants,
+          pendingTasks: tasksData.length,
+          todaysTasks: todaysTasks.length,
+          avgHealth,
+          nextHarvest: 0 // Can be calculated based on plant harvest dates if needed
+        });
       } catch (error) {
-        console.error('Error parsing user data:', error);
-        setCurrentUser(mockUser);
+        console.error('Failed to load dashboard data:', error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    fetchDashboardData();
   }, []);
 
-  const handleTaskComplete = (taskId) => {
-    setTasks(prevTasks => 
-      prevTasks.map(task => 
-        task.id === taskId 
-          ? { ...task, status: task.status === 'completed' ? 'pending' : 'completed' }
-          : task
-      )
-    );
+  const handleTaskComplete = async (taskId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
+      await taskAPI.update(taskId, { status: newStatus });
+      setTasks(prevTasks => 
+        prevTasks.map(task => 
+          task._id === taskId 
+            ? { ...task, status: newStatus }
+            : task
+        )
+      );
+    } catch (error) {
+      console.error('Failed to update task:', error);
+    }
   };
-
-  const todaysTasks = tasks.filter(task => task.dueDate === '2025-01-15');
-  const pendingTasks = todaysTasks.filter(task => task.status === 'pending');
-  const healthyPlants = mockPlants.filter(plant => plant.status === 'healthy').length;
-  const totalPlants = mockPlants.length;
-  const nextHarvest = Math.min(...mockPlants.map(plant => plant.nextHarvest));
-  const avgHealth = Math.round(mockPlants.reduce((sum, plant) => sum + plant.health, 0) / mockPlants.length);
 
   const stats = [
     {
