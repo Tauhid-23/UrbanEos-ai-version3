@@ -196,7 +196,7 @@ const TaskManager = () => {
                         {task.priority}
                       </span>
                       <button
-                        onClick={() => handleDeleteTask(task.id)}
+                        onClick={() => handleDeleteTask(task._id)}
                         className="p-2 text-gray-400 hover:text-red-500 transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
