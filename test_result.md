@@ -130,20 +130,41 @@ backend:
         comment: "Task Model created with all fields (user, plant, plantName, task, taskType, priority, status, dueDate, time, completedAt, notes, reminder, recurring). Task Controller implemented with getAllTasks (with filters), getTaskById, createTask, updateTask (with completedAt handling), deleteTask, getTasksByDateRange. All routes protected with auth middleware. Ready for testing."
 
 frontend:
-  - task: "Enhanced Hero Section with Real Images"
+  - task: "Plant API Integration & MyGarden Page"
     implemented: true
-    working: true
-    file: "/app/frontend/src/pages/marketing/LandingPage.js"
+    working: "NA"
+    file: "/app/frontend/src/services/api.js, /app/frontend/src/pages/app/MyGarden.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: true
+      - working: "NA"
         agent: "main"
-        comment: "Replaced emoji graphics with high-quality balcony garden image from Unsplash"
-      - working: true
-        agent: "testing"
-        comment: "✅ TESTED: Hero section working perfectly. High-quality balcony garden image loads successfully, floating stats cards (95% success rate, 50K+ plants) display properly, hero heading and content render correctly across all device sizes."
+        comment: "plantAPI fully implemented with getAll, getById, create, update, delete, addNote, updateCare, addHarvest. MyGarden page uses real API calls - NO demo data. Fetches plants on mount, displays loading state, shows empty state when no plants, delete functionality implemented. BUGS FIXED: Changed plant.id to plant._id for delete, fixed nextHarvest display to calculate from expectedHarvestDate. Ready for testing."
+  
+  - task: "Task API Integration & TaskManager Page"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/services/api.js, /app/frontend/src/pages/app/TaskManager.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "taskAPI fully implemented with getAll (with filters), getById, create, update, delete, getByDateRange. TaskManager page uses real API calls - NO demo data. Fetches tasks and plants on mount, create task modal with plant selection, mark complete/incomplete functionality, delete functionality, loading states. Ready for testing."
+  
+  - task: "Dashboard Real Data Integration"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/app/Dashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Dashboard fetches real data from plantAPI and taskAPI - NO demo data. Calculates statistics: total plants, healthy plants, pending tasks, today's tasks, average health. Displays first 5 pending tasks with complete/incomplete toggle. Loading states implemented. Ready for testing."
   
   - task: "Counting Animations for Statistics"
     implemented: true
