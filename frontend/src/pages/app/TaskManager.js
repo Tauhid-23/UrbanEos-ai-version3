@@ -38,38 +38,54 @@ const TaskManager = () => {
     fetchData();
   }, []);
 
-  const handleTaskComplete = (taskId) => {
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === taskId
-          ? { ...task, status: task.status === 'completed' ? 'pending' : 'completed' }
-          : task
-      )
-    );
-  };
-
-  const handleDeleteTask = (taskId) => {
-    if (window.confirm('Are you sure you want to delete this task?')) {
-      setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+  const handleTaskComplete = async (taskId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
+      await taskAPI.update(taskId, { status: newStatus });
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task._id === taskId
+            ? { ...task, status: newStatus }
+            : task
+        )
+      );
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      alert('Failed to update task. Please try again.');
     }
   };
 
-  const handleAddTask = (e) => {
+  const handleDeleteTask = async (taskId) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      try {
+        await taskAPI.delete(taskId);
+        setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId));
+      } catch (error) {
+        console.error('Failed to delete task:', error);
+        alert('Failed to delete task. Please try again.');
+      }
+    }
+  };
+
+  const handleAddTask = async (e) => {
     e.preventDefault();
-    const task = {
-      id: Date.now(),
-      ...newTask,
-      status: 'pending'
-    };
-    setTasks(prevTasks => [...prevTasks, task]);
-    setNewTask({
-      task: '',
-      plant: '',
-      time: 'Morning',
-      priority: 'medium',
-      dueDate: new Date().toISOString().split('T')[0]
-    });
-    setShowModal(false);
+    try {
+      const response = await taskAPI.create(newTask);
+      setTasks(prevTasks => [...prevTasks, response.data.task]);
+      setNewTask({
+        task: '',
+        plantName: '',
+        plant: '',
+        taskType: 'other',
+        time: 'Morning',
+        priority: 'medium',
+        dueDate: new Date().toISOString().split('T')[0]
+      });
+      setShowModal(false);
+    } catch (error) {
+      console.error('Failed to create task:', error);
+      alert('Failed to create task. Please try again.');
+    }
   };
 
   const getPriorityColor = (priority) => {
