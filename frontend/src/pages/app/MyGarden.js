@@ -29,11 +29,15 @@ const MyGarden = () => {
     fetchPlants();
   }, []);
 
-  const handleDeletePlant = (plantId) => {
+  const handleDeletePlant = async (plantId) => {
     if (window.confirm('Are you sure you want to remove this plant from your garden?')) {
-      const updatedPlants = plants.filter(plant => plant.id !== plantId);
-      setPlants(updatedPlants);
-      localStorage.setItem('myGardenPlants', JSON.stringify(updatedPlants));
+      try {
+        await plantAPI.delete(plantId);
+        setPlants(plants.filter(plant => plant._id !== plantId));
+      } catch (error) {
+        console.error('Failed to delete plant:', error);
+        alert('Failed to delete plant. Please try again.');
+      }
     }
   };
 
