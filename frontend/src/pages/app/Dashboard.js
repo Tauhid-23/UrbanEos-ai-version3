@@ -194,9 +194,9 @@ const Dashboard = () => {
             </button>
           </div>
 
-          {todaysTasks.length > 0 ? (
+          {tasks.length > 0 ? (
             <div className="space-y-4">
-              {todaysTasks.slice(0, 4).map((task) => (
+              {tasks.map((task) => (
                 <div
                   key={task._id}
                   className={`
