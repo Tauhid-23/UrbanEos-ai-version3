@@ -143,20 +143,19 @@ const Dashboard = () => {
     return <CheckSquare className="h-4 w-4" />;
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Weather Alert Banner */}
-      {mockWeather.alert && (
-        <div className="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-r-lg">
-          <div className="flex items-center">
-            <AlertTriangle className="h-5 w-5 text-orange-400 mr-3" />
-            <div>
-              <p className="text-orange-800 font-medium">Weather Alert</p>
-              <p className="text-orange-700 text-sm">{mockWeather.alert}</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
