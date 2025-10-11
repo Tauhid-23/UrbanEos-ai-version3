@@ -102,20 +102,32 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Add shopping/quote request modal system to Plant Database with essential supplies, optional add-ons, contact form with Bangladesh location fields, and success confirmation."
+user_problem_statement: "PHASE 3: Implement complete CRUD operations for Plants & Tasks. Remove ALL demo data from frontend. Connect frontend to backend APIs. Test all operations end-to-end."
 
 backend:
-  - task: "No backend changes required for UI enhancement"
+  - task: "Plant Model & CRUD Operations"
     implemented: true
-    working: true
-    file: "N/A"
+    working: "NA"
+    file: "/app/backend/models/Plant.js, /app/backend/controllers/plantController.js, /app/backend/routes/plants.js"
     stuck_count: 0
-    priority: "low"
-    needs_retesting: false
+    priority: "high"
+    needs_retesting: true
     status_history:
-      - working: true
+      - working: "NA"
         agent: "main"
-        comment: "UI/UX enhancement task - backend not affected"
+        comment: "Plant Model created with all fields (user, name, type, variety, image, plantedDate, health, status, location, careSchedule, notes, harvestLog, isActive). Plant Controller implemented with getAllPlants, getPlantById, createPlant, updatePlant, deletePlant (soft delete), addPlantNote, updateCareSchedule, addHarvestLog. All routes protected with auth middleware. Ready for testing."
+  
+  - task: "Task Model & CRUD Operations"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/models/Task.js, /app/backend/controllers/taskController.js, /app/backend/routes/tasks.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Task Model created with all fields (user, plant, plantName, task, taskType, priority, status, dueDate, time, completedAt, notes, reminder, recurring). Task Controller implemented with getAllTasks (with filters), getTaskById, createTask, updateTask (with completedAt handling), deleteTask, getTasksByDateRange. All routes protected with auth middleware. Ready for testing."
 
 frontend:
   - task: "Enhanced Hero Section with Real Images"
