@@ -253,13 +253,20 @@ const TaskManager = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Plant</label>
                 <select
                   value={newTask.plant}
-                  onChange={(e) => setNewTask(prev => ({ ...prev, plant: e.target.value }))}
+                  onChange={(e) => {
+                    const selectedPlant = plants.find(p => p._id === e.target.value);
+                    setNewTask(prev => ({
+                      ...prev,
+                      plant: e.target.value,
+                      plantName: selectedPlant ? selectedPlant.name : ''
+                    }));
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   required
                 >
                   <option value="">Select a plant</option>
-                  {mockPlants.map(plant => (
-                    <option key={plant.id} value={plant.name}>{plant.name}</option>
+                  {plants.map(plant => (
+                    <option key={plant._id} value={plant._id}>{plant.name}</option>
                   ))}
                 </select>
               </div>
