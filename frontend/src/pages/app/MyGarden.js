@@ -115,7 +115,7 @@ const MyGarden = () => {
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {plants.map((plant) => (
-            <div key={plant.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+            <div key={plant._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
               {/* Plant Header with Gradient */}
               <div className={`
                 p-6 text-white relative overflow-hidden
