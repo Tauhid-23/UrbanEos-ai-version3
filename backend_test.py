@@ -139,8 +139,8 @@ class UrbanEosBackendTester:
             
             if response.status_code == 200:
                 data = response.json()
-                if data.get('success') and data.get('token'):
-                    self.token = data['token']
+                if data.get('success') and data.get('data', {}).get('token'):
+                    self.token = data['data']['token']
                     print(f"✅ Login successful")
                     print(f"   New Token: {self.token[:20]}...")
                     return True
