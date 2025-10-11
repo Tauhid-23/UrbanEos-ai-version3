@@ -12,8 +12,8 @@ from typing import Dict, Any, Optional
 
 class UrbanEosBackendTester:
     def __init__(self):
-        # Use the production URL from frontend/.env
-        self.base_url = "https://garden-tracker-app.preview.emergentagent.com/api"
+        # Use the local backend URL since external URL returns 502
+        self.base_url = "http://localhost:5000/api"
         self.token = None
         self.user_id = None
         self.test_plants = []
