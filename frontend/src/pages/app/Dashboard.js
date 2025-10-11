@@ -92,34 +92,34 @@ const Dashboard = () => {
     }
   };
 
-  const stats = [
+  const statsCards = [
     {
       title: 'Plants Growing',
-      value: totalPlants.toString(),
-      subtitle: `${healthyPlants} healthy`,
+      value: stats.totalPlants.toString(),
+      subtitle: `${stats.healthyPlants} healthy`,
       color: 'from-green-500 to-emerald-600',
       icon: Sprout,
       onClick: () => navigate('/my-garden')
     },
     {
       title: 'Tasks Due Today',
-      value: pendingTasks.length.toString(),
-      subtitle: `${todaysTasks.length} total tasks`,
+      value: stats.todaysTasks.toString(),
+      subtitle: `${stats.pendingTasks} total pending`,
       color: 'from-blue-500 to-indigo-600',
       icon: CheckSquare,
       onClick: () => navigate('/tasks')
     },
     {
       title: 'Days Until Harvest',
-      value: nextHarvest.toString(),
+      value: stats.nextHarvest.toString(),
       subtitle: 'Next harvest ready',
       color: 'from-orange-500 to-red-500',
       icon: Calendar,
-      onClick: () => navigate('/harvest')
+      onClick: () => navigate('/my-garden')
     },
     {
       title: 'Garden Health Score',
-      value: `${avgHealth}%`,
+      value: `${stats.avgHealth}%`,
       subtitle: 'Overall garden health',
       color: 'from-purple-500 to-pink-500',
       icon: TrendingUp,
