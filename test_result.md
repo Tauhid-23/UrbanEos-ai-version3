@@ -335,12 +335,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Plant Model & CRUD Operations"
-    - "Task Model & CRUD Operations"
     - "Plant API Integration & MyGarden Page"
     - "Task API Integration & TaskManager Page"
     - "Dashboard Real Data Integration"
-  stuck_tasks: []
+    - "External URL Routing Configuration"
+  stuck_tasks:
+    - "External URL Routing Configuration"
   test_all: true
   test_priority: "high_first"
 
