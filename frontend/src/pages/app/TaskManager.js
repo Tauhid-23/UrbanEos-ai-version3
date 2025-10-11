@@ -143,7 +143,7 @@ const TaskManager = () => {
           <div className="divide-y divide-gray-200">
             {tasks.map((task) => (
               <div
-                key={task.id}
+                key={task._id}
                 className={`
                   p-6 flex items-center space-x-4 transition-all hover:bg-gray-50
                   ${task.status === 'completed' ? 'bg-green-50 opacity-75' : ''}
@@ -151,7 +151,7 @@ const TaskManager = () => {
               >
                 {/* Checkbox */}
                 <button
-                  onClick={() => handleTaskComplete(task.id)}
+                  onClick={() => handleTaskComplete(task._id, task.status)}
                   className={`
                     w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0
                     ${task.status === 'completed'
