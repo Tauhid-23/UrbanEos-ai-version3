@@ -1,17 +1,42 @@
-import React, { useState } from 'react';
-import { Plus, CheckSquare, Droplets, Trash2, Calendar } from 'lucide-react';
-import { mockTasks, mockPlants } from '../../data/mock';
+import React, { useState, useEffect } from 'react';
+import { Plus, CheckSquare, Droplets, Trash2, Calendar, Loader2 } from 'lucide-react';
+import { taskAPI, plantAPI } from '../../services/api';
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState(mockTasks);
+  const [tasks, setTasks] = useState([]);
+  const [plants, setPlants] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newTask, setNewTask] = useState({
     task: '',
+    plantName: '',
     plant: '',
+    taskType: 'other',
     time: 'Morning',
     priority: 'medium',
     dueDate: new Date().toISOString().split('T')[0]
   });
+
+  // Fetch tasks and plants on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [tasksRes, plantsRes] = await Promise.all([
+          taskAPI.getAll(),
+          plantAPI.getAll()
+        ]);
+        setTasks(tasksRes.data.tasks || []);
+        setPlants(plantsRes.data.plants || []);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleTaskComplete = (taskId) => {
     setTasks(prevTasks =>
